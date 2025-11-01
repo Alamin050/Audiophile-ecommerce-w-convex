@@ -11,6 +11,9 @@ module.exports = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xs': '375px',
+      },
       colors: {
         // Your custom colors will go here
       },
