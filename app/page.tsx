@@ -2,6 +2,7 @@
 import { useQuery } from "convex/react";
 import { api } from "../convex/_generated/api";
 import Hero from "@/components/Home/Hero";
+import Products from "@/components/Home/Products";
 
 
 export default function Home() {
@@ -9,6 +10,7 @@ export default function Home() {
   return (
     <div className="w-full">
       <Hero />
+      <Products />
     </div>
   );
 }
