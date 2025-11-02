@@ -8,6 +8,7 @@ import Navbar from '@/components/Navbar';
 import ProductCards from '@/components/ProductCards';
 import About from '@/components/Home/About';
 import Footer from '@/components/Footer';
+import { Skeleton } from 'antd';
 
 interface ProductDetailClientProps {
   slug: string;
@@ -18,7 +19,57 @@ function ProductDetailClient({ slug }: ProductDetailClientProps) {
   console.log({ slug });
 
   if (!product) {
-    return <div className="w-full overflow-x-hidden py-[100px] px-[25px] text-center">Product not found.</div>;
+    return (
+      <div className="w-full overflow-x-hidden bg-(--white-light)">
+        <div className="bg-black lg:px-[100px] md:px-[50px] px-[25px]"><Navbar isProductPage={true} /></div>
+        <div className="mx-auto max-w-[1110px] py-[100px] md:py-[35px] xl:px-0 lg:px-[100px] md:px-[50px] px-[25px] animate-pulse">
+          <Skeleton active paragraph={{ rows: 1 }} className="mb-[30px]" />
+          <div className="flex flex-col md:flex-row h-auto md:h-fit items-start md:items-center gap-10 lg:gap-30">
+            <Skeleton.Image active className="rounded-lg w-full md:w-1/2 h-[300px]" />
+            <div className="text flex flex-col gap-6 justify-center md:justify-start w-full md:w-1/2 text-center md:text-left px-5">
+              <Skeleton active paragraph={{ rows: 4 }} />
+            </div>
+          </div>
+          <div className="mt-20 flex flex-col lg:flex-row gap-20">
+            <div className="flex flex-col gap-10 lg:w-2/3">
+              <Skeleton active paragraph={{ rows: 5 }} />
+            </div>
+            <div className="flex flex-col gap-10 lg:w-1/3">
+              <Skeleton active paragraph={{ rows: 5 }} />
+            </div>
+          </div>
+          <div className="my-20 grid md:grid-cols-2 lg:grid-cols-3 gap-5 lg:h-[592px]">
+            <div className="flex flex-col gap-5 h-full">
+              <Skeleton.Image active className="rounded-lg h-full" />
+              <Skeleton.Image active className="rounded-lg h-full" />
+            </div>
+            <div className="md:col-span-1 lg:col-span-2 h-full">
+              <Skeleton.Image active className="rounded-lg h-full w-full" />
+            </div>
+          </div>
+          <div className="text-center mt-20 lg:mt-30 xl:mt-50">
+            <Skeleton active paragraph={{ rows: 1 }} className="mb-10 mx-auto" />
+            <div className="flex flex-col md:flex-row gap-5 justify-center">
+              <div className="flex flex-col items-center gap-5">
+                <Skeleton.Image active className="rounded-lg w-full max-w-[350px] h-[150px]" />
+                <Skeleton active paragraph={{ rows: 2 }} />
+              </div>
+              <div className="flex flex-col items-center gap-5">
+                <Skeleton.Image active className="rounded-lg w-full max-w-[350px] h-[150px]" />
+                <Skeleton active paragraph={{ rows: 2 }} />
+              </div>
+              <div className="flex flex-col items-center gap-5">
+                <Skeleton.Image active className="rounded-lg w-full max-w-[350px] h-[150px]" />
+                <Skeleton active paragraph={{ rows: 2 }} />
+              </div>
+            </div>
+          </div>
+        </div>
+        <ProductCards />
+        <About />
+        <Footer />
+      </div>
+    );
   }
 
   return (
@@ -68,7 +119,7 @@ function ProductDetailClient({ slug }: ProductDetailClientProps) {
             <img src={`/assets/product-${slug}/mobile/image-gallery-3.jpg`} alt={`${product.name} gallery 3`} className="rounded-lg h-full w-full object-cover" />
           </div>
         </div>
-        <div className="text-center  mt-20 lg:mt-30 xl:mt-50">
+        <div className="text-center  mt-30 lg:mt-50 xl:mt-80">
           <h2 className="text-3xl font-semibold uppercase mb-10">You may also like</h2>
           <div className="flex flex-col md:flex-row gap-5 justify-center">
             {product.others.map((otherProduct) => (

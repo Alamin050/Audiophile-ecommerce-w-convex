@@ -4,6 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link'; // Import Link
 import { useQuery } from "convex/react"; // Import useQuery
 import { api } from "../../convex/_generated/api"; // Import api
+import { Skeleton } from 'antd';
 
 function SpeakersProducts() {
   const products = useQuery(api.products.getAll); // Fetch all products
@@ -12,7 +13,25 @@ function SpeakersProducts() {
   const speakers = products?.filter(product => product.category === "speakers");
 
   if (!speakers) {
-    return <div>Loading speakers...</div>;
+    return (
+      <div className='bg-(--white-light) lg:py-[150px] py-[100px] lg:px-[100px] md:px-[50px] px-[25px] animate-pulse'>
+        <div className="mx-auto max-w-[1110px]">
+          <div className="mx-auto lg:max-w-[1110px] flex flex-col gap-20 ">
+            {[...Array(2)].map((_, index) => (
+              <div
+                key={index}
+                className={`flex flex-col ${index % 2 !== 0 ? 'lg:flex-row-reverse' : 'lg:flex-row'} h-auto md:h-fit items-start md:items-center gap-10 lg:gap-30`}
+              >
+                <Skeleton.Image active className="rounded-lg w-full h-[300px] lg:w-1/2" />
+                <div className="text flex flex-col gap-6 justify-center md:justify-start w-full lg:w-1/2 text-center lg:text-left px-5">
+                  <Skeleton active paragraph={{ rows: 4 }} />
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </div>
+    );
   }
 
   const desiredOrder = ["zx9-speaker", "zx7-speaker"];
