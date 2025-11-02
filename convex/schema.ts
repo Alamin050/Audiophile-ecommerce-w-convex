@@ -54,4 +54,37 @@ export default defineSchema({
       }),
     })),
   }),
+
+  orders: defineTable({
+    customerDetails: v.object({
+      name: v.string(),
+      email: v.string(),
+      phone: v.string(),
+    }),
+    shippingDetails: v.object({
+      address: v.string(),
+      zip: v.string(),
+      city: v.string(),
+      country: v.string(),
+    }),
+    paymentMethod: v.string(), // e.g., 'e-Money', 'Cash on Delivery'
+    eMoneyDetails: v.optional(v.object({ // Optional for e-Money payments
+      eMoneyNumber: v.string(),
+      eMoneyPin: v.string(),
+    })),
+    items: v.array(v.object({
+      id: v.number(),
+      name: v.string(),
+      price: v.number(),
+      quantity: v.number(),
+    })),
+    totals: v.object({
+      subtotal: v.number(),
+      shipping: v.number(),
+      vat: v.number(), // Assuming VAT is calculated as a percentage of subtotal
+      grandTotal: v.number(),
+    }),
+    orderStatus: v.string(), // e.g., 'pending', 'completed', 'shipped'
+    timestamp: v.number(), // Unix timestamp
+  }),
 });

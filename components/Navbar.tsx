@@ -1,10 +1,14 @@
 "use client"
 import React, { useState, useRef, useEffect } from 'react';
 import Image from 'next/image';
+import CartModal from '@/components/CartModal';
+import { useCartStore } from '@/store/cartStore';
 
 function Navbar({ isProductPage }: { isProductPage?: boolean }) {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isCartModalOpen, setIsCartModalOpen] = useState(false);
   const menuRef = useRef<HTMLUListElement>(null);
+  const totalItems = useCartStore((state) => state.totalItems);
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -55,10 +59,16 @@ function Navbar({ isProductPage }: { isProductPage?: boolean }) {
         )}
 
         {/* Cart Icon (Always visible) */}
-        <div className="flex-1 flex justify-end cursor-pointer lg:flex-none">
-          <Image src="/assets/carts.svg" alt="Cart" width={24} height={24} />
+        <div className="flex-1 flex justify-end cursor-pointer lg:flex-none relative">
+          <Image src="/assets/carts.svg" alt="Cart" width={24} height={24} onClick={() => setIsCartModalOpen(true)} />
+          {totalItems > 0 && (
+            <span className="absolute -top-2 -right-2 bg-(--orange-dark) text-white rounded-full h-5 w-5 flex items-center justify-center text-xs">
+              {totalItems}
+            </span>
+          )}
         </div>
       </div>
+      <CartModal isOpen={isCartModalOpen} onClose={() => setIsCartModalOpen(false)} />
     </nav>
   );
 }

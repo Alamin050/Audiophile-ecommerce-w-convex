@@ -1,5 +1,5 @@
 "use client";
-import React from 'react';
+import React, { useState } from 'react';
 import Image from 'next/image';
 import { useQuery } from "convex/react";
 import { api } from "../../../convex/_generated/api";
@@ -8,7 +8,10 @@ import Navbar from '@/components/Navbar';
 import ProductCards from '@/components/ProductCards';
 import About from '@/components/Home/About';
 import Footer from '@/components/Footer';
+import QuantitySelector from '@/components/QuantitySelector';
 import { Skeleton } from 'antd';
+import { useCartStore } from '@/store/cartStore';
+import CartModal from '@/components/CartModal';
 
 interface ProductDetailClientProps {
   slug: string;
@@ -16,6 +19,9 @@ interface ProductDetailClientProps {
 
 function ProductDetailClient({ slug }: ProductDetailClientProps) {
   const product = useQuery(api.products.getProductBySlug, { slug: slug });
+   const [isCartModalOpen, setIsCartModalOpen] = useState(false);
+    const addItem = useCartStore((state) => state.addItem);
+    const [quantity, setQuantity] = useState(1);
   console.log({ slug });
 
   if (!product) {
@@ -76,10 +82,10 @@ function ProductDetailClient({ slug }: ProductDetailClientProps) {
     <div className="w-full overflow-x-hidden bg-(--white-light)">
       <div className="bg-black lg:px-[100px] md:px-[50px] px-[25px]"><Navbar isProductPage={true} /></div>
       <div className="mx-auto max-w-[1110px] py-[100px] md:py-[35px] xl:px-0 lg:px-[100px] md:px-[50px] px-[25px] ">
-          <Link href="/headphones">
-            <p className='text-black/50 mb-[30px] cursor-pointer hover:text-(--orange-dark)'>Go Back</p>
-          </Link>
-       
+        <Link href="/headphones">
+          <p className='text-black/50 mb-[30px] cursor-pointer hover:text-(--orange-dark)'>Go Back</p>
+        </Link>
+
         <div className="flex flex-col md:flex-row h-auto md:h-fit items-start md:items-center gap-10 lg:gap-30">
           <picture className='rounded-lg w-full'>
             <source media="(min-width: 1024px)" srcSet={`/assets/product-${slug}/desktop/image-product.jpg`} />
@@ -91,8 +97,27 @@ function ProductDetailClient({ slug }: ProductDetailClientProps) {
             <h1 className='text-3xl xs:text-4xl  md:text-5xl xl:text-6xl font-semibold uppercase'>{product.name}</h1>
             <p className='text-base mx-auto md:mx-auto lg:mx-0 tracking-wide '>{product.description}</p>
             <p className='text-lg font-bold'>$ {product.price.toLocaleString()}</p>
+            <div className="flex gap-4 justify-center md:justify-start">
+              <QuantitySelector quantity={quantity} onQuantityChange={setQuantity} />
+              <p
+                className='p-2 px-4 flex items-center uppercase bg-(--orange-dark) hover:bg-(--orange-light) cursor-pointer w-fit text-base text-white'
+                onClick={() => {
+                  addItem({
+                    id: product.id,
+                    name: product.name,
+                    price: product.price,
+                    quantity: quantity, // Use the quantity from state
+                    image: `/assets/cart/image-${product.slug}.jpg`, // Using hardcoded cart image path
+                  });
+                  setIsCartModalOpen(true);
+                }}
+              >
+                add to cart
+              </p>
+            </div>
           </div>
         </div>
+        <CartModal isOpen={isCartModalOpen} onClose={() => setIsCartModalOpen(false)} />
         <div className="mt-20 flex flex-col lg:flex-row gap-20">
           <div className="flex flex-col gap-10 lg:w-2/3">
             <h2 className="text-3xl font-semibold uppercase">Features</h2>

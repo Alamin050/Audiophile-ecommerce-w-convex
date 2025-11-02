@@ -7,3 +7,18 @@
   --white-light: #FAFAFA;
   --black-light: #101010;
 }
+
+.modal-btn{
+  background-color: #D87D4A !important;
+  border-radius: 0px !important;
+}
+.modal-btn:hover{
+  background-color: #FBAF85 !important;
+}
+
+.modal-link{
+  color: rgba(0, 0, 0, 0.5) !important;
+}
+.modal-link:hover{
+  color: #D87D4A !important;
+}
