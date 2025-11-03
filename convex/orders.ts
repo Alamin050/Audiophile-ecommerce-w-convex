@@ -15,12 +15,14 @@ export const createOrder = mutation({
       country: v.string(),
     }),
     paymentMethod: v.string(),
-    items: v.array(v.object({
-      id: v.number(),
-      name: v.string(),
-      price: v.number(),
-      quantity: v.number(),
-    })),
+    items: v.array(
+      v.object({
+        id: v.number(),
+        name: v.string(),
+        price: v.number(),
+        quantity: v.number(),
+      })
+    ),
     totals: v.object({
       subtotal: v.number(),
       shipping: v.number(),
@@ -34,6 +36,7 @@ export const createOrder = mutation({
       orderStatus: "pending",
       timestamp: Date.now(),
     };
+
     const orderId = await ctx.db.insert("orders", order);
     return orderId;
   },
@@ -44,7 +47,6 @@ export const getOrderById = query({
     orderId: v.id("orders"),
   },
   handler: async (ctx, args) => {
-    const order = await ctx.db.get(args.orderId);
-    return order;
+    return await ctx.db.get(args.orderId);
   },
 });

@@ -11,6 +11,7 @@
 import type * as orders from "../orders.js";
 import type * as products from "../products.js";
 import type * as seed from "../seed.js";
+import type * as sendEmail from "../sendEmail.js";
 
 import type {
   ApiFromModules,
@@ -30,6 +31,7 @@ declare const fullApi: ApiFromModules<{
   orders: typeof orders;
   products: typeof products;
   seed: typeof seed;
+  sendEmail: typeof sendEmail;
 }>;
 declare const fullApiWithMounts: typeof fullApi;
 

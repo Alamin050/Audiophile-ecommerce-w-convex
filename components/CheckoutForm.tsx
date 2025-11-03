@@ -76,25 +76,56 @@ const CheckoutForm = forwardRef<CheckoutFormRef, CheckoutFormProps>((props, ref)
 
     try {
       const orderId = await createOrder({
-        customerDetails: { name: data.name, email: data.email, phone: data.phone },
-        shippingDetails: { address: data.address, zip: data.zip, city: data.city, country: data.country },
+        customerDetails: {
+          name: data.name,
+          email: data.email,
+          phone: data.phone,
+        },
+        shippingDetails: {
+          address: data.address,
+          zip: data.zip,
+          city: data.city,
+          country: data.country,
+        },
         paymentMethod: data.paymentMethod,
         items: orderItems,
-        totals: { subtotal, shipping: shippingCost, vat, grandTotal },
+        totals: {
+          subtotal,
+          shipping: shippingCost,
+          vat,
+          grandTotal,
+        },
       });
-      console.log('Order created successfully. orderId:', orderId);
+
+      console.log("Order created successfully. orderId:", orderId);
+
+      // ✅ Send email via Next.js route
+      await fetch("/api/send-email", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          to: data.email,
+          name: data.name,
+          orderId,
+          items: orderItems,
+          totals: { subtotal, shipping: shippingCost, vat, grandTotal },
+          baseUrl: window.location.origin,
+        }),
+      });
+
       clearCart();
       onOrderSuccess(orderId);
     } catch (error) {
-      console.error('Error creating order:', error);
+      console.error("Error creating order:", error);
     }
+
   };
- 
+
   useImperativeHandle(ref, () => ({
-  triggerSubmit: () => handleSubmit(onSubmit, (errors) => {
+    triggerSubmit: () => handleSubmit(onSubmit, (errors) => {
       console.error('CheckoutForm validation errors:', errors);
     })(),
-}));
+  }));
 
 
   const paymentMethod = watch('paymentMethod');
