@@ -64,7 +64,7 @@ const CartModal: React.FC<CartModalProps> = ({ isOpen, onClose }) => {
               <p className="text-black/50 uppercase">Total</p>
               <p className="text-lg font-bold">$ {totalAmount.toLocaleString()}</p>
             </div>
-            <Button type="primary" size="large" onClick={handleCheckout} className="modal-btn w-full text-white">
+            <Button type="primary" size="large" onClick={handleCheckout} className="modal-btn uppercase! tracking-wider! w-full text-white">
               Checkout
             </Button>
           </>

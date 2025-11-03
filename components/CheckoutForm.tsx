@@ -237,6 +237,7 @@ const CheckoutForm = forwardRef<CheckoutFormRef, CheckoutFormProps>((props, ref)
 
                 <Radio.Group {...field} className="flex flex-col md:flex-row gap-4 w-full md:w-1/2">
                   {[
+                    { value: "E-Money", label: "E-Money" },
                     { value: "Cash on Delivery", label: "Cash on Delivery" },
                   ].map((option) => (
                     <div
